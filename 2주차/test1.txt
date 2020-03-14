@@ -1,0 +1,29 @@
+필수!!
+
+ head에 넣기
+
+
+ <!-- JS -->   
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
+
+
+
+ 스타일밑에
+
+      <script>
+    function hey(){
+      alert('안녕!');
+    }
+    </script>
+
+function 뒤에 나오는 단어는 뭐든 상관없지만 다음에 나올 onclick 뒤에 같은 단어가 나와줘야한다
+
+
+
+
+<button type="button" class="btn btn-primary">기사저장</button>
+에서 이걸로 바꾸기
+<button onclick="hey()" type="button" class="btn btn-primary">기사저장</button>
