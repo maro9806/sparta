@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <title>비타민 기획서 </title>
+
+    <!--필수적인 것-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Jua&display=swap" rel="stylesheet">  <!--코딩 -->
+     <script type="text/javascript">
+   
+     function isCellPhone(p) {
+        var regExp = /^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})[-][0-9]{3,4}[-][0-9]{4}$/;
+        return regExp.test(p);
+      }
+      function order() {
+        let name = $('#order_name').val();
+        let count = $('#order_count').val();
+        let address = $('#order_address').val();
+        let phone = $('#order_phone').val();
+        if (name == ''){
+          alert('이름을 입력하세요')
+          $('#order_name').focus()
+          return
+        } else if (count == ''){
+          alert('수량을 입력하세요')
+          $('#order_count').focus()
+          return
+        } else if (address == ''){
+          alert('주소를 입력하세요')
+          $('#order_address').focus()
+          return
+        } else if (phone == ''){
+          alert('휴대폰번호를 입력하세요')
+          $('#order_phone').focus()
+          return
+        } else if (!isCellPhone(phone)) {
+          alert('휴대폰번호 입력 형식이 틀립니다. \n 010-0000-0000으로 입력해주세요')
+          return
+        }
+
+        $.ajax({
+          type: "POST",
+          url: "/order",
+          data: { name_give:name, count_give:count, address_give:address, phone_give:phone },
+          success: function(response){
+            if(response['result'] == 'success'){
+              alert('주문 완료!');
+              window.location.reload();
+            }
+          }
+        })
+      }
+
+      $(document).ready(function(){
+        $('#orders-box').html('');
+        listing();
+      });
+
+      function listing() {
+        $.ajax({
+          type: "GET",
+          url: "/order",
+          data: {},
+          success: function(response){
+             if (response['result'] == 'success') {
+               let orders = response['orders'];
+               console.log(orders);
+               for (let i = 0; i < orders.length; i++) {
+                 make_card(orders[i]['name'],orders[i]['count'],orders[i]['address'],orders[i]['phone'])
+               }
+             } else {
+               alert('기사를 받아오지 못했습니다');
+             }
+          }
+        })
+      }
+
+      function make_card(name,count,address,phone) {
+        let temp_html = '<tr>\
+            <td>'+name+'</td>\
+            <td>'+count+'</td>\
+            <td>'+address+'</td>\
+            <td>'+phone+'</td>\
+          </tr>';
+        $('#orders-box').append(temp_html);
+      }
+    </script>
+
+    <style type="text/css">
+      * {
+        font-family: 'Jua', sans-serif;
+      }
+      .wrap {
+        width: 500px;
+        margin: auto;
+      }
+      .img {
+        background-image: url('http://blogfiles.naver.net/MjAyMDAyMDNfNTYg/MDAxNTgwNzA4MDcxOTc5.deLUthRY67VU9SKxM3PUiWjtpZzQz-M3xRQI9QwT-HAg.4DsJK8XVOOs2BBjnSA1DzRfAABCO__mlqWp10cdk9igg.PNG.lbkcompany/image.png');
+        background-size: cover;
+        background-position: center;
+        width: 500px;
+        height: 500px;
+      }
+      .info {
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+      .user-info {
+        margin: 20px 5px auto 5px;
+      }
+      h1, h5 {
+        display: inline;
+      }
+      .order {
+        text-align: center;
+      }
+      .orders {
+        margin-top: 100px;
+      }
+    </style>
+</head>
+<body>
+    
+    <div class="wrap">
+     <div class="img"></div>
+    <div class="info">
+    <h1><span style="color:red">맛있게 햇빛 충전</span>
+    <span style="color:rgb(82, 17, 17)">쌩쌩 비타민</span>
+     </h1>
+     <h3>가격:   판매가  <strong>11,000</strong> <small>원 /개</small> </h3>
+        <p>한국인의 93%가 비타민D 부족.</p>
+           <h5><p>햇빛으로 채울 수 없다면 맛있게 먹어서 채우자!</p></h5>
+            <span style="color:red">비타민D 2,000IU</span>
+            <p>1일 비타민D 권장량 500% 충족
+            활성형 비타민D3으로 생체이용률 UP!
+            오렌지맛 츄어블★
+            남녀노소 누구나 맛있게 씹어서 섭취.</p>
+      </div>
+      <div class="info">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon3">주문자 이름</span>
+          </div>
+          <input type="text" class="form-control" id="order_name" aria-describedby="basic-addon3">
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSelect01">수량</label>
+          </div>
+          <select class="custom-select" id="order_count">
+            <option selected="" value=""> -- 수량을 선택하세요 -- </option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon3">주소</span>
+          </div>
+          <input type="text" class="form-control" id="order_address" aria-describedby="basic-addon3">
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon3">전화번호</span>
+          </div>
+          <input type="text" class="form-control" id="order_phone" aria-describedby="basic-addon3">
+        </div>
+        <div class="order">
+          <button onclick="order()" type="button" class="btn btn-warning">주문하기</button>
+        </div>
+      </div>
+     </div>
+
+</body></html>
